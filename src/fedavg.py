@@ -11,7 +11,7 @@ from tensorboardX import SummaryWriter
 from options import args_parser
 from update import LocalUpdate, mal_inference, test_inference
 from models import MLP, LeNet, CNNMnist, CNNFashion_Mnist, CNNCifar, CNNFeMnist, CNNFeMnist_sim, CNNMiniImagenet, ConvNet
-from utils import get_dataset, exp_details, average_weights_ns, get_mal_dataset
+from utils import get_dataset, exp_details, average_weights, get_mal_dataset
 
 if __name__ == '__main__':
     np.random.seed(903)
@@ -91,7 +91,7 @@ if __name__ == '__main__':
        
 
         #print(local_ns)
-        global_weights = average_weights_ns(local_weights, local_ns)
+        global_weights = average_weights(local_weights)
 
         # update global weights
         global_model.load_state_dict(global_weights)
