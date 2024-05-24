@@ -50,13 +50,7 @@ if __name__ == '__main__':
     # copy weights
     global_weights = global_model.state_dict()
 
-    # malicious users
-    mal_users = [7]
-    
-
-    mal_X_list, mal_Y, Y_true = get_mal_dataset(test_dataset, args.num_mal_samples, args.num_classes)
-    print("malcious dataset true labels: {}, malicious labels: {}".format(Y_true, mal_Y))
-
+   
     # Training
     train_loss, train_accuracy = [], []
     val_acc_list, net_list = [], []
@@ -76,46 +70,25 @@ if __name__ == '__main__':
         #rs_new_ep = []
         #rs_old_ep = []
         for idx in idxs_users:
-            mal_user = False
-            if idx in mal_users:
-                mal_user = True
-                t_adv = True
-                print("Malcious user {} is selected!".format(idx))
+            
             if args.dataset == 'HAR' or args.dataset == 'shakespeare' or 'extr_noniid' in args.dataset:
                 local_model = LocalUpdate(args=args, dataset=train_dataset,
-                                          idxs=user_groups_train[idx], logger=logger, mal=mal_user, mal_X=mal_X_list, mal_Y=mal_Y, dataset_test=test_dataset, idxs_test=user_groups_test[idx])
+                                          idxs=user_groups_train[idx], logger=logger , dataset_test=test_dataset, idxs_test=user_groups_test[idx])
             else:
                 local_model = LocalUpdate(args=args, dataset=train_dataset,
-                                          idxs=user_groups[idx], logger=logger, mal=mal_user, mal_X=mal_X_list, mal_Y=mal_Y, dataset_test=test_dataset)
+                                          idxs=user_groups[idx], logger=logger, dataset_test=test_dataset)
             w, loss = local_model.update_weights(
                 model=copy.deepcopy(global_model), global_round=epoch, device=device)
             # get new model
             new_model = copy.deepcopy(global_model)
             new_model.load_state_dict(w)
             acc, _ = local_model.inference(model=new_model)
-            if mal_user == True:
-                mal_acc, mal_loss = local_model.mal_inference(model=new_model)
-            if mal_user == True:
-                print('user {}, loss {}, acc {}, mal loss {}, mal acc {}'.format(idx, loss, acc, mal_loss, mal_acc))
-            else:
-                print('user {}, loss {}, acc {}'.format(idx, loss, acc))
+            print('user {}, loss {}, acc {}'.format(idx, loss, acc))
             local_weights.append(copy.deepcopy(w))
             local_losses.append(copy.deepcopy(loss))
-            if mal_user:
-                local_ns.append(args.mal_boost)
-            else:
-                local_ns.append(1)
+            local_ns.append(1)
            
-        # only args.mal_boost malicious devices and m-args.mal_boost benign devices involve in aggregation
-        if t_adv is True:
-            count = 0
-            for i in range(m):
-                if local_ns[i] == 1:
-                    local_ns[i] = 0
-                    count += 1
-                if count == args.mal_boost-1:
-                    break
-
+       
 
         print(local_ns)
         global_weights = average_weights_ns(local_weights, local_ns)
@@ -132,9 +105,7 @@ if __name__ == '__main__':
             print(f'Training Loss : {np.mean(np.array(train_loss))}')
             test_acc, test_loss = test_inference(args, global_model, test_dataset)
             print('Global model Benign Test Accuracy: {:.2f}% \n'.format(100*test_acc))
-            mal_acc, mal_loss, mal_out = mal_inference(args, global_model, test_dataset, mal_X_list, mal_Y)
-            print('Global model Malicious Accuracy: {:.2f}%, Malicious Loss: {:.2f} , Outputs: {}\n'.format(100*mal_acc, 100*mal_loss, mal_out))
-
+           
     # Test inference after completion of training
     test_acc, test_loss = test_inference(args, global_model, test_dataset)
 
