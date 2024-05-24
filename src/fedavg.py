@@ -90,7 +90,7 @@ if __name__ == '__main__':
            
        
 
-        print(local_ns)
+        #print(local_ns)
         global_weights = average_weights_ns(local_weights, local_ns)
 
         # update global weights
@@ -104,7 +104,7 @@ if __name__ == '__main__':
             print(f' \nAvg Training Stats after {epoch+1} global rounds:')
             print(f'Training Loss : {np.mean(np.array(train_loss))}')
             test_acc, test_loss = test_inference(args, global_model, test_dataset)
-            print('Global model Benign Test Accuracy: {:.2f}% \n'.format(100*test_acc))
+            print('Global model Test Accuracy: {:.2f}% \n'.format(100*test_acc))
            
     # Test inference after completion of training
     test_acc, test_loss = test_inference(args, global_model, test_dataset)
@@ -112,13 +112,31 @@ if __name__ == '__main__':
     print(f' \n Results after {args.epochs} global rounds of training:')
     print("|---- Test Accuracy: {:.2f}%".format(100*test_acc))
 
-    # Saving the objects train_loss and train_accuracy:
-    file_name = '../save/objects/{}_{}_{}_C[{}]_iid[{}]_E[{}]_B[{}].pkl'.\
-        format(args.dataset, args.model, args.epochs, args.frac, args.iid,
-               args.local_ep, args.local_bs)
 
+    # Define the file path
+    file_path = '../save/objects/'
+
+    # Create the directory if it doesn't exist
+    os.makedirs(file_path, exist_ok=True)
+
+    # Construct the file name
+    file_name = '{}{}_{}_{}_C[{}]_iid[{}]_E[{}]_B[{}].pkl'.format(
+        file_path, args.dataset, args.model, args.epochs, args.frac, args.iid,
+        args.local_ep, args.local_bs
+    )
+
+    # Save the objects train_loss and train_accuracy
     with open(file_name, 'wb') as f:
         pickle.dump([train_loss, train_accuracy], f)
 
-    print('\n Total Run Time: {0:0.4f}'.format(time.time()-start_time))
+
+    # # Saving the objects train_loss and train_accuracy:
+    # file_name = '../save/objects/{}_{}_{}_C[{}]_iid[{}]_E[{}]_B[{}].pkl'.\
+    #     format(args.dataset, args.model, args.epochs, args.frac, args.iid,
+    #            args.local_ep, args.local_bs)
+
+    # with open(file_name, 'wb') as f:
+    #     pickle.dump([train_loss, train_accuracy], f)
+
+    # print('\n Total Run Time: {0:0.4f}'.format(time.time()-start_time))
 
