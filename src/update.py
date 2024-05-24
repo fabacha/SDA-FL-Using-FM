@@ -14,22 +14,17 @@ class DatasetSplit(Dataset):
     """An abstract Dataset class wrapped around Pytorch Dataset class.
     """
 
-    def __init__(self, dataset, idxs, Y=None):
+    def __init__(self, dataset, idxs):
         self.dataset = dataset
         self.idxs = [int(i) for i in idxs]
-        self.mal=False
-        if Y is not None:
-            self.mal = True
-            self.mal_Y = Y
+        
 
     def __len__(self):
         return len(self.idxs)
 
     def __getitem__(self, item):
         image, label = self.dataset[self.idxs[item]]
-        if self.mal==True:
-            label_mal = self.mal_Y[item]
-            return torch.tensor(image), torch.tensor(label_mal), torch.tensor(label)
+        
         return torch.tensor(image), torch.tensor(label)
 
 
@@ -56,11 +51,11 @@ class LocalUpdate(object):
         idxs_val = idxs[int(0.9*len(idxs)):]
         idxs_test = idxs_test
 
-        trainloader = DataLoader(DatasetSplit(dataset, idxs_train, self.mal, self.mal_target),
+        trainloader = DataLoader(DatasetSplit(dataset, idxs_train),
                                  batch_size=self.args.local_bs, shuffle=True)
-        validloader = DataLoader(DatasetSplit(dataset, idxs_val, self.mal, self.mal_target),
+        validloader = DataLoader(DatasetSplit(dataset, idxs_val),
                                  batch_size=int(len(idxs_val)), shuffle=False)
-        testloader = DataLoader(DatasetSplit(dataset_test, idxs_test, self.mal, self.mal_target),
+        testloader = DataLoader(DatasetSplit(dataset_test, idxs_test),
                                 batch_size=40, shuffle=True)
         return trainloader, validloader, testloader    
 
