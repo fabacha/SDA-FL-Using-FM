@@ -38,7 +38,8 @@ if __name__ == '__main__':
         if args.dataset == 'fmnist':
             global_model = CNNFashion_Mnist(args=args)
         elif args.dataset == 'cifar':
-            global_model = CNNCifar(args=args)
+            global_model = CNNCifar()
+            #global_model = CNNCifar(args=args)
     else:
         exit('Error: unrecognized model')
 
