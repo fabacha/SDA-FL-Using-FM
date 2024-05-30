@@ -9,9 +9,9 @@ import torch
 from tensorboardX import SummaryWriter
 
 from options import args_parser
-from update import LocalUpdate, mal_inference, test_inference
+from update import LocalUpdate, test_inference
 from models import MLP, LeNet, CNNMnist, CNNFashion_Mnist, CNNCifar, CNNFeMnist, CNNFeMnist_sim, CNNMiniImagenet, ConvNet
-from utils import get_dataset, exp_details, average_weights, get_mal_dataset
+from utils import get_dataset, exp_details, average_weights
 
 if __name__ == '__main__':
     np.random.seed(903)
