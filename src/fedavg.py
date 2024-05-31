@@ -13,6 +13,7 @@ from update import LocalUpdate, test_inference
 from models import MLP, LeNet, CNNMnist, CNNFashion_Mnist, CNNCifar, CNNFeMnist, CNNFeMnist_sim, CNNMiniImagenet, ConvNet
 from utils import get_dataset, exp_details, average_weights
 from sampling import get_dataset_cifar10_extr_noniid
+from plot import plot_class_distribution
 
 if __name__ == '__main__':
     np.random.seed(903)
