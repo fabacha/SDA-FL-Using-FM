@@ -103,5 +103,17 @@ def args_parser():
                         help='rounds of early stopping')
     parser.add_argument('--verbose', type=int, default=1, help='verbose')
     parser.add_argument('--seed', type=int, default=1, help='random seed')
+
+    #extranoniid args
+
+    parser.add_argument('--num_users_cifar', type=int, default=10,
+                        help='the number of clients you want to distributed data to')
+    parser.add_argument('--nclass_cifar', type=int, default=2,
+                        help='the number of image classes each client has')
+    parser.add_argument('--nsamples_cifar', type=int, default=2000,
+                        help='number of samples per class distributed to clients')
+    parser.add_argument('--rate_unbalance_cifar', type=float, default=0.5,
+                        help='Rate of unbalance for CIFAR dataset (default: 0.5)')
+    
     args = parser.parse_args()
     return args
