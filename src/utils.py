@@ -10,19 +10,7 @@ from torchvision import datasets, transforms
 from sampling import mnist_iid, mnist_noniid, mnist_noniid_unequal
 from sampling import cifar_iid, cifar_noniid, cifar_extr_noniid, miniimagenet_extr_noniid, mnist_extr_noniid
 
-def get_mal_dataset(dataset, num_mal, num_classes):
-    X_list = np.random.choice(len(dataset), num_mal)
-    print(X_list)
-    Y_true = []
-    for i in X_list:
-        _, Y = dataset[i]
-        Y_true.append(Y)
-    Y_mal = []
-    for i in range(num_mal):
-        allowed_targets = list(range(num_classes))
-        allowed_targets.remove(Y_true[i])
-        Y_mal.append(np.random.choice(allowed_targets))
-    return X_list, Y_mal, Y_true
+
 
 def get_dataset(args):
     """ Returns train and test datasets and a user group which is a dict where
@@ -66,8 +54,8 @@ def get_dataset(args):
             transforms.Normalize((0.1307,), (0.3081,))])
         
         if args.dataset == 'mnist':
-            train_dataset = datasets.MNIST(data_dir, train=True, download=False, transform=apply_transform)
-            test_dataset = datasets.MNIST(data_dir, train=False, download=False, transform=apply_transform)
+            train_dataset = datasets.MNIST(data_dir, train=True, download=True, transform=apply_transform)
+            test_dataset = datasets.MNIST(data_dir, train=False, download=True, transform=apply_transform)
         else:
             train_dataset = datasets.FashionMNIST(data_dir, train=True, download=True, transform=apply_transform)
             test_dataset = datasets.FashionMNIST(data_dir, train=False, download=True, transform=apply_transform)
@@ -104,17 +92,6 @@ def average_weights(w):
     return w_avg
 
 
-def average_weights_ns(w, ns):
-    """
-    Returns the weighted average of the weights.
-    """
-    w_avg = copy.deepcopy(w[0])
-    for key in w_avg.keys():
-        w_avg[key] * ns[0]
-        for i in range(1, len(w)):
-            w_avg[key] += ns[i] * w[i][key]
-        w_avg[key] = torch.div(w_avg[key], sum(ns))
-    return w_avg
 
 
 def exp_details(args):
