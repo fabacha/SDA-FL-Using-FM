@@ -69,7 +69,23 @@ if __name__ == '__main__':
         nclass_cifar = args.nclass_cifar
         nsamples_cifar = args.nsamples_cifar
         rate_unbalance_cifar = args.rate_unbalance_cifar
-        train_dataset, test_dataset, user_groups_train, user_groups_test = get_dataset_cifar10_extr_noniid(num_users_cifar, nclass_cifar, nsamples_cifar, rate_unbalance_cifar)
+        #train_dataset, test_dataset, user_groups_train, user_groups_test = get_dataset_cifar10_extr_noniid(num_users_cifar, nclass_cifar, nsamples_cifar, rate_unbalance_cifar)
+
+        class_distribution = {
+        0: [0, 1],  # Client 0 gets samples from 'airplane' and 'automobile'
+        1: [2, 3],  # Client 1 gets samples from 'bird' and 'cat'
+        2: [4, 5],  # Client 2 gets samples from 'deer' and 'dog'
+        3: [6, 7],  # Client 3 gets samples from 'frog' and 'horse'
+        4: [8, 9],  # Client 4 gets samples from 'ship' and 'truck'
+        5: [0, 2],  # Client 5 gets samples from 'airplane' and 'bird'
+        6: [1, 3],  # Client 6 gets samples from 'automobile' and 'cat'
+        7: [4, 6],  # Client 7 gets samples from 'deer' and 'frog'
+        8: [5, 7],  # Client 8 gets samples from 'dog' and 'horse'
+        9: [8, 9]   # Client 9 gets samples from 'ship' and 'truck'
+        }
+
+        train_dataset, test_dataset, user_groups_train, user_groups_test= get_dataset_cifar10_extr_noniid(num_users_cifar, class_distribution, nsamples_cifar, rate_unbalance_cifar)
+
 
     for epoch in tqdm(range(args.epochs)):
         local_weights, local_losses, local_ns = [], [], []
