@@ -63,9 +63,9 @@ if __name__ == '__main__':
     val_loss_pre, counter = 0, 0
 
 
-    num_users_cifar = 400
+    num_users_cifar = 10
     nclass_cifar = 2
-    nsamples_cifar = 20
+    nsamples_cifar = 1000
     rate_unbalance_cifar = 1.0
     train_dataset_cifar, test_dataset_cifar, user_groups_train_cifar, user_groups_test_cifar = get_dataset_cifar10_extr_noniid(num_users_cifar, nclass_cifar, nsamples_cifar, rate_unbalance_cifar)
 
@@ -82,9 +82,13 @@ if __name__ == '__main__':
         #rs_old_ep = []
         for idx in idxs_users:
             
-            if args.dataset == 'HAR' or args.dataset == 'shakespeare' or 'extr_noniid' in args.dataset:
+            if args.dataset == 'HAR' or args.dataset == 'shakespeare':
                 local_model = LocalUpdate(args=args, dataset=train_dataset,
                                           idxs=user_groups_train[idx], logger=logger , dataset_test=test_dataset, idxs_test=user_groups_test[idx])
+
+            elif args.dataset == 'cifar10_extr_noniid':
+                local_model = LocalUpdate(args=args, dataset=train_dataset_cifar,
+                                          idxs=user_groups_train_cifar[idx], logger=logger , dataset_test=test_dataset_cifar, idxs_test=user_groups_test_cifar[idx])
             else:
                 local_model = LocalUpdate(args=args, dataset=train_dataset,
                                           idxs=user_groups[idx], logger=logger, dataset_test=test_dataset)
