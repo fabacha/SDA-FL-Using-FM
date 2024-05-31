@@ -183,6 +183,10 @@ if __name__ == '__main__':
     
     #plot_class_distribution(data_loaders, args.num_users)
 
+if args.dataset == 'cifar10_extr_noniid':
     plot_client_data_distribution(train_dataset, user_groups_train)
+else:
+    plot_client_data_distribution(train_dataset, user_groups)
+
 
 
