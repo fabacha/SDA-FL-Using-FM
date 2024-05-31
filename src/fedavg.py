@@ -12,6 +12,7 @@ from options import args_parser
 from update import LocalUpdate, test_inference
 from models import MLP, LeNet, CNNMnist, CNNFashion_Mnist, CNNCifar, CNNFeMnist, CNNFeMnist_sim, CNNMiniImagenet, ConvNet
 from utils import get_dataset, exp_details, average_weights
+from sampling import get_dataset_cifar10_extr_noniid
 
 if __name__ == '__main__':
     np.random.seed(903)
@@ -58,6 +59,10 @@ if __name__ == '__main__':
     cv_loss, cv_acc = [], []
     print_every = 1
     val_loss_pre, counter = 0, 0
+
+
+
+    train_dataset_cifar, test_dataset_cifar, user_groups_train_cifar, user_groups_test_cifar = get_dataset_cifar10_extr_noniid(num_users_cifar, nclass_cifar, nsamples_cifar, rate_unbalance_cifar)
 
     for epoch in tqdm(range(args.epochs)):
         local_weights, local_losses, local_ns = [], [], []
