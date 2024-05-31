@@ -20,7 +20,7 @@ def plot_client_data_distribution(train_dataset, user_groups_train):
     
     num_users = len(user_groups_train)
     
-    for user_id, indices in user_groups_train.items():
+    for user_id, indices in user_groups.items():
         labels = np.array(train_dataset.targets)[indices.astype(int)]
         label_counts = np.bincount(labels, minlength=10)
         
