@@ -41,7 +41,7 @@ if __name__ == '__main__':
         elif args.dataset == 'cifar':
             global_model = CNNCifar()
             #global_model = CNNCifar(args=args)
-        elif args.dataset == 'cifar10_extr_noniid:
+        elif args.dataset == 'cifar10_extr_noniid':
             global_model = CNNCifar()
     else:
         exit('Error: unrecognized model')
