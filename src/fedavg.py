@@ -63,9 +63,9 @@ if __name__ == '__main__':
     val_loss_pre, counter = 0, 0
 
     if args.dataset == 'cifar10_extr_noniid':
-        num_users_cifar = args.num_users_cifar
+        num_users_cifar = args.num_users
         nclass_cifar = args.nclass_cifar
-        nsamples_cifar = args.nsamples_cifar
+        nsamples_cifar = args.nsamples
         rate_unbalance_cifar = args.rate_unbalance_cifar
         train_dataset, test_dataset, user_groups_train, user_groups_test = get_dataset_cifar10_extr_noniid(num_users_cifar, nclass_cifar, nsamples_cifar, rate_unbalance_cifar)
 
