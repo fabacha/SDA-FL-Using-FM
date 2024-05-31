@@ -62,12 +62,12 @@ if __name__ == '__main__':
     print_every = 1
     val_loss_pre, counter = 0, 0
 
-
-    num_users_cifar = 10
-    nclass_cifar = 2
-    nsamples_cifar = 1000
-    rate_unbalance_cifar = 1.0
-    train_dataset_cifar, test_dataset_cifar, user_groups_train_cifar, user_groups_test_cifar = get_dataset_cifar10_extr_noniid(num_users_cifar, nclass_cifar, nsamples_cifar, rate_unbalance_cifar)
+    if args.dataset == 'cifar10_extr_noniid':
+        num_users_cifar = 10
+        nclass_cifar = 2
+        nsamples_cifar = 1000
+        rate_unbalance_cifar = 1.0
+        train_dataset, test_dataset, user_groups_train, user_groups_test = get_dataset_cifar10_extr_noniid(num_users_cifar, nclass_cifar, nsamples_cifar, rate_unbalance_cifar)
 
     for epoch in tqdm(range(args.epochs)):
         local_weights, local_losses, local_ns = [], [], []
@@ -87,8 +87,8 @@ if __name__ == '__main__':
                                           idxs=user_groups_train[idx], logger=logger , dataset_test=test_dataset, idxs_test=user_groups_test[idx])
 
             elif args.dataset == 'cifar10_extr_noniid':
-                local_model = LocalUpdate(args=args, dataset=train_dataset_cifar,
-                                          idxs=user_groups_train_cifar[idx], logger=logger , dataset_test=test_dataset_cifar, idxs_test=user_groups_test_cifar[idx])
+                local_model = LocalUpdate(args=args, dataset=train_dataset,
+                                          idxs=user_groups_train[idx], logger=logger , dataset_test=test_dataset, idxs_test=user_groups_test[idx])
             else:
                 local_model = LocalUpdate(args=args, dataset=train_dataset,
                                           idxs=user_groups[idx], logger=logger, dataset_test=test_dataset)
