@@ -24,7 +24,7 @@ def plot_client_data_distribution(train_dataset, user_groups_train):
         labels = np.array(train_dataset.targets)[indices.astype(int)]
         label_counts = np.bincount(labels, minlength=10)
         
-        plt.figure(figsize=(10, 5))
+        plt.figure(figsize=(8, 3))
         sns.barplot(x=list(idx_to_class.values()), y=label_counts)
         plt.title(f"Class Distribution for Client {user_id+1}")
         plt.xlabel("Class")
