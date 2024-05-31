@@ -69,7 +69,7 @@ if __name__ == '__main__':
         nclass_cifar = args.nclass_cifar
         nsamples_cifar = args.nsamples_cifar
         rate_unbalance_cifar = args.rate_unbalance_cifar
-        #train_dataset, test_dataset, user_groups_train, user_groups_test = get_dataset_cifar10_extr_noniid(num_users_cifar, nclass_cifar, nsamples_cifar, rate_unbalance_cifar)
+        train_dataset, test_dataset, user_groups_train, user_groups_test = get_dataset_cifar10_extr_noniid(num_users_cifar, nclass_cifar, nsamples_cifar, rate_unbalance_cifar)
 
         class_distribution = {
         0: [0, 1],  # Client 0 gets samples from 'airplane' and 'automobile'
@@ -84,7 +84,7 @@ if __name__ == '__main__':
         9: [8, 9]   # Client 9 gets samples from 'ship' and 'truck'
         }
 
-        train_dataset, test_dataset, user_groups_train, user_groups_test= get_dataset_cifar10_extr_noniid(num_users_cifar, class_distribution, nsamples_cifar, rate_unbalance_cifar)
+        #train_dataset, test_dataset, user_groups_train, user_groups_test= get_dataset_cifar10_extr_noniid(num_users_cifar, class_distribution, nsamples_cifar, rate_unbalance_cifar)
 
 
     for epoch in tqdm(range(args.epochs)):
