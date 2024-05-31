@@ -71,6 +71,15 @@ if __name__ == '__main__':
         rate_unbalance_cifar = args.rate_unbalance_cifar
         train_dataset, test_dataset, user_groups_train, user_groups_test = get_dataset_cifar10_extr_noniid(num_users_cifar, nclass_cifar, nsamples_cifar, rate_unbalance_cifar)
 
+    if args.dataset == 'cifar10_extr_noniid' and args.add_synthetic:
+        num_users_cifar = args.num_users
+        nclass_cifar = args.nclass_cifar
+        nsamples_cifar = args.nsamples_cifar
+        rate_unbalance_cifar = args.rate_unbalance_cifar
+        train_dataset, test_dataset, user_groups_train, user_groups_test = get_dataset_cifar10_extr_noniid(num_users_cifar, nclass_cifar, nsamples_cifar, rate_unbalance_cifar)
+        synthetic_dataset = SyntheticImageDataset(root_dir='./synthetic_data', transform=synthetic_transform)
+        combined_datasets = combine_datasets(train_dataset, synthetic_dataset)
+
         class_distribution = {
         0: [0, 1],  # Client 0 gets samples from 'airplane' and 'automobile'
         1: [2, 3],  # Client 1 gets samples from 'bird' and 'cat'
