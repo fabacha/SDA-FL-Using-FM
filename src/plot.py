@@ -16,6 +16,8 @@ from torch.utils.data import Dataset, ConcatDataset, DataLoader
 
 
 def plot_client_data_distribution(train_dataset, user_groups_train):
+    idx_to_class = {0: 'airplane', 1: 'automobile', 2: 'bird', 3: 'cat', 4: 'deer', 5: 'dog', 6: 'frog', 7: 'horse', 8: 'ship', 9: 'truck'}
+    
     num_users = len(user_groups_train)
     
     for user_id, indices in user_groups_train.items():
@@ -23,12 +25,27 @@ def plot_client_data_distribution(train_dataset, user_groups_train):
         label_counts = np.bincount(labels, minlength=10)
         
         plt.figure(figsize=(10, 5))
-        sns.barplot(x=np.arange(10), y=label_counts)
-        plt.title(f"Class Distribution for Client {user_id}")
+        sns.barplot(x=list(idx_to_class.values()), y=label_counts)
+        plt.title(f"Class Distribution for Client {user_id+1}")
         plt.xlabel("Class")
         plt.ylabel("Number of Samples")
-        plt.xticks(np.arange(10))
+        plt.xticks(rotation=45)
         plt.show()
+
+# def plot_client_data_distribution(train_dataset, user_groups_train):
+#     num_users = len(user_groups_train)
+    
+#     for user_id, indices in user_groups_train.items():
+#         labels = np.array(train_dataset.targets)[indices.astype(int)]
+#         label_counts = np.bincount(labels, minlength=10)
+        
+#         plt.figure(figsize=(10, 5))
+#         sns.barplot(x=np.arange(10), y=label_counts)
+#         plt.title(f"Class Distribution for Client {user_id}")
+#         plt.xlabel("Class")
+#         plt.ylabel("Number of Samples")
+#         plt.xticks(np.arange(10))
+#         plt.show()
 
 
 # from functools import partial
