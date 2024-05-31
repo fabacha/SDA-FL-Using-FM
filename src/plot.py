@@ -15,6 +15,22 @@ from torchvision import transforms
 from torch.utils.data import Dataset, ConcatDataset, DataLoader
 
 
+def plot_client_data_distribution(train_dataset, user_groups_train):
+    num_users = len(user_groups_train)
+    
+    for user_id, indices in user_groups_train.items():
+        labels = np.array(train_dataset.targets)[indices.astype(int)]
+        label_counts = np.bincount(labels, minlength=10)
+        
+        plt.figure(figsize=(10, 5))
+        sns.barplot(x=np.arange(10), y=label_counts)
+        plt.title(f"Class Distribution for Client {user_id}")
+        plt.xlabel("Class")
+        plt.ylabel("Number of Samples")
+        plt.xticks(np.arange(10))
+        plt.show()
+
+
 # from functools import partial
 # from matplotlib import pyplot as plt
 
@@ -45,25 +61,25 @@ from torch.utils.data import Dataset, ConcatDataset, DataLoader
 #     plt.show()
 
 
-def plot_client_data_distribution(train_dataset, user_groups_train):
-    # Create a DataFrame to store the counts
+# def plot_client_data_distribution(train_dataset, user_groups_train):
+#     # Create a DataFrame to store the counts
    
 
-    num_users = len(user_groups_train)
-    all_data = []
+#     num_users = len(user_groups_train)
+#     all_data = []
 
-    for user_id, indices in user_groups_train.items():
-        labels = np.array(train_dataset.targets)[indices.astype(int)]
-        label_counts = np.bincount(labels, minlength=10)
-        for label, count in enumerate(label_counts):
-            all_data.append([user_id, label, count])
+#     for user_id, indices in user_groups_train.items():
+#         labels = np.array(train_dataset.targets)[indices.astype(int)]
+#         label_counts = np.bincount(labels, minlength=10)
+#         for label, count in enumerate(label_counts):
+#             all_data.append([user_id, label, count])
 
-    df = pd.DataFrame(all_data, columns=["User ID", "Class", "Count"])
+#     df = pd.DataFrame(all_data, columns=["User ID", "Class", "Count"])
 
-    plt.figure(figsize=(20, 10))
-    sns.barplot(x="User ID", y="Count", hue="Class", data=df)
-    plt.title("Class Distribution per Client")
-    plt.xlabel("Client ID")
-    plt.ylabel("Number of Samples")
-    plt.legend(title="Class")
-    plt.show()
+#     plt.figure(figsize=(20, 10))
+#     sns.barplot(x="User ID", y="Count", hue="Class", data=df)
+#     plt.title("Class Distribution per Client")
+#     plt.xlabel("Client ID")
+#     plt.ylabel("Number of Samples")
+#     plt.legend(title="Class")
+#     plt.show()
