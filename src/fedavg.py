@@ -63,10 +63,10 @@ if __name__ == '__main__':
     val_loss_pre, counter = 0, 0
 
     if args.dataset == 'cifar10_extr_noniid':
-        num_users_cifar = 10
-        nclass_cifar = 2
-        nsamples_cifar = 2000
-        rate_unbalance_cifar = 0.5
+        num_users_cifar = args.num_users_cifar
+        nclass_cifar = args.nclass_cifar
+        nsamples_cifar = args.nsamples_cifar
+        rate_unbalance_cifar = args.rate_unbalance_cifar
         train_dataset, test_dataset, user_groups_train, user_groups_test = get_dataset_cifar10_extr_noniid(num_users_cifar, nclass_cifar, nsamples_cifar, rate_unbalance_cifar)
 
     for epoch in tqdm(range(args.epochs)):
