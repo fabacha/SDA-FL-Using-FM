@@ -11,6 +11,42 @@ from sampling import mnist_iid, mnist_noniid, mnist_noniid_unequal
 from sampling import cifar_iid, cifar_noniid, cifar_extr_noniid, miniimagenet_extr_noniid, mnist_extr_noniid
 
 
+class SyntheticImageDataset(Dataset):
+    def __init__(self, root_dir, transform=None):
+        self.root_dir = root_dir
+        self.transform = transform
+        self.image_files = sorted(os.listdir(root_dir))
+        
+    def __len__(self):
+        return len(self.image_files)
+    
+    def __getitem__(self, idx):
+        img_name = os.path.join(self.root_dir, self.image_files[idx])
+        image = Image.open(img_name).convert('RGB')
+        
+        if self.transform:
+            image = self.transform(image)
+            
+        return image
+
+# Function to combine CIFAR-10 dataset with synthetic image data for each client
+
+def combine_datasets(cifar_dataset, synthetic_dataset):
+    combined_datasets = []
+    
+    for idx in range(len(cifar_dataset)):
+        cifar_data, cifar_label = cifar_dataset[idx]
+        synthetic_data = synthetic_dataset[idx % len(synthetic_dataset)]
+        
+        # Concatenate CIFAR-10 data with synthetic data
+        combined_data = torch.cat((cifar_data.unsqueeze(0), synthetic_data.unsqueeze(0)))
+        combined_label = torch.cat((cifar_label.unsqueeze(0), torch.tensor([10])))  # Assuming synthetic data label is 10
+        
+        combined_datasets.append((combined_data, combined_label))
+    
+    return combined_datasets
+
+
 
 def get_dataset(args):
     """ Returns train and test datasets and a user group which is a dict where
