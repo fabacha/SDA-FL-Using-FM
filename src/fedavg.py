@@ -185,8 +185,8 @@ if __name__ == '__main__':
 
 if args.dataset == 'cifar10_extr_noniid':
     plot_client_data_distribution(train_dataset, user_groups_train)
-elif args. iid == 1:
-    plot_client_data_distribution_iid(train_dataset, user_groups)
+# elif args. iid == 1:
+#     plot_client_data_distribution_iid(train_dataset, user_groups)
 else:
     plot_client_data_distribution(train_dataset, user_groups)
 
