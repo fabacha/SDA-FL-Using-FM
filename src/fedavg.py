@@ -13,7 +13,8 @@ from update import LocalUpdate, test_inference
 from models import MLP, LeNet, CNNMnist, CNNFashion_Mnist, CNNCifar, CNNFeMnist, CNNFeMnist_sim, CNNMiniImagenet, ConvNet
 from utils import get_dataset, exp_details, average_weights
 from sampling import get_dataset_cifar10_extr_noniid
-from plot import plot_class_distribution
+from plot import plot_client_data_distribution
+#plot_class_distribution
 
 if __name__ == '__main__':
     np.random.seed(903)
@@ -157,13 +158,15 @@ if __name__ == '__main__':
     # print('\n Total Run Time: {0:0.4f}'.format(time.time()-start_time))
 
 # Create DataLoader for each client's subset of the dataset
-    data_loaders = []
-    for i in range(args.num_users):
-        idx = list(idxs_users[i])
-        client_dataset = Subset(user_groups_train, idx)
-        data_loader = DataLoader(client_dataset, batch_size=32, shuffle=True)
-        data_loaders.append([data_loader])
+    # data_loaders = []
+    # for i in range(args.num_users):
+    #     idx = list(idxs_users[i])
+    #     client_dataset = Subset(user_groups_train, idx)
+    #     data_loader = DataLoader(client_dataset, batch_size=32, shuffle=True)
+    #     data_loaders.append([data_loader])
     
-    plot_class_distribution(data_loaders, args.num_users)
+    #plot_class_distribution(data_loaders, args.num_users)
+
+    plot_client_data_distribution(train_dataset, user_groups_train)
 
 
