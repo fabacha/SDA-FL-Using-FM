@@ -142,6 +142,24 @@ def mnist_noniid_unequal(dataset, num_users):
     return dict_users
 
 
+
+def get_dataset_cifar10_extr_noniid(num_users, n_class, nsamples, rate_unbalance):
+    data_dir = '../data/cifar/'
+    apply_transform = transforms.Compose(
+        [transforms.ToTensor(),
+         transforms.Normalize((0.4914, 0.4822, 0.4465), (0.2023, 0.1994, 0.2010))])
+    train_dataset = datasets.CIFAR10(data_dir, train=True, download=True,
+                                   transform=apply_transform)
+
+    test_dataset = datasets.CIFAR10(data_dir, train=False, download=True,
+                                      transform=apply_transform)
+
+    # Chose euqal splits for every user
+    user_groups_train, user_groups_test = cifar_extr_noniid(train_dataset, test_dataset, num_users, n_class, nsamples, rate_unbalance)
+    return train_dataset, test_dataset, user_groups_train, user_groups_test
+
+
+
 def cifar_iid(dataset, num_users):
     """
     Sample I.I.D. client data from CIFAR10 dataset
