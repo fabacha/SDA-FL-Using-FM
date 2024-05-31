@@ -13,7 +13,7 @@ from update import LocalUpdate, test_inference
 from models import MLP, LeNet, CNNMnist, CNNFashion_Mnist, CNNCifar, CNNFeMnist, CNNFeMnist_sim, CNNMiniImagenet, ConvNet
 from utils import get_dataset, exp_details, average_weights
 from sampling import get_dataset_cifar10_extr_noniid
-from plot import plot_client_data_distribution
+from plot import plot_client_data_distribution, plot_client_data_distribution_iid
 #plot_class_distribution
 
 if __name__ == '__main__':
@@ -185,6 +185,8 @@ if __name__ == '__main__':
 
 if args.dataset == 'cifar10_extr_noniid':
     plot_client_data_distribution(train_dataset, user_groups_train)
+elif args. iid == 1:
+    plot_client_data_distribution_iid(train_dataset, user_groups)
 else:
     plot_client_data_distribution(train_dataset, user_groups)
 
