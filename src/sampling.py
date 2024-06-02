@@ -371,6 +371,7 @@ def synthetic_cifar_extr_noniid(train_dataset, test_dataset, num_users, n_class,
     dict_users_test = {i: np.array([]) for i in range(num_users)} 
     idxs = np.arange(num_shards_train*num_imgs_train)
     # labels = dataset.train_labels.numpy()
+    synthetic_labels = [9] * 5000
     labels = np.array(synthetic_labels)
     idxs_test = np.arange(num_imgs_test_total)
     labels_test = np.array(test_dataset.targets)
