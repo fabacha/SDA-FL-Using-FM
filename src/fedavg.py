@@ -12,7 +12,7 @@ from options import args_parser
 from update import LocalUpdate, test_inference
 from models import MLP, LeNet, CNNMnist, CNNFashion_Mnist, CNNCifar, CNNFeMnist, CNNFeMnist_sim, CNNMiniImagenet, ConvNet
 from utils import get_dataset, exp_details, average_weights
-from sampling import get_dataset_cifar10_extr_noniid
+from sampling import get_dataset_cifar10_extr_noniid, get_synthetic_dataset , get_combined_datasets
 from plot import plot_client_data_distribution, plot_client_data_distribution_iid
 from sampling import SyntheticImageDataset
 #plot_class_distribution
@@ -80,7 +80,7 @@ if __name__ == '__main__':
         train_dataset, test_dataset, user_groups_train, user_groups_test = get_dataset_cifar10_extr_noniid(num_users_cifar, nclass_cifar, nsamples_cifar, rate_unbalance_cifar)
         #synthetic_dataset = SyntheticImageDataset(root_dir='./synthetic_data', transform=synthetic_transform)
         synthetic_train_dataset, test_dataset, user_groups_train, user_groups_test = get_synthetic_dataset(num_users_cifar, nclass_cifar, nsamples_cifar, rate_unbalance_cifar)
-        combined_datasets = combine_datasets(train_dataset, synthetic_train_dataset)
+        #combined_datasets = combine_datasets(train_dataset, synthetic_train_dataset)
         train_dataset, test_dataset, user_groups_train, user_groups_test = get_combined_datasets(num_users_cifar, nclass_cifar, nsamples_cifar, rate_unbalance_cifar)
         
 
