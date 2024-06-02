@@ -116,7 +116,7 @@ def args_parser():
                         help='Rate of unbalance for CIFAR dataset (default: 0.5)')
 
     #Synthetic Data
-     parser.add_argument('--add_synthetic', type=int, default=0,
+    parser.add_argument('--add_synthetic', type=int, default=0,
                         help='add synthetic data?')
     
     
