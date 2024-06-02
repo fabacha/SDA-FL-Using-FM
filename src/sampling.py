@@ -221,7 +221,7 @@ def get_synthetic_dataset(num_users, n_class, nsamples, rate_unbalance):
                                       transform=apply_transform)
 
     # Chose euqal splits for every user
-    user_groups_train, user_groups_test = cifar_extr_noniid(synthetic_train_dataset, test_dataset, num_users, n_class, nsamples, rate_unbalance)
+    user_groups_train, user_groups_test = synthetic_cifar_extr_noniid(synthetic_train_dataset, test_dataset, num_users, n_class, nsamples, rate_unbalance)
     return train_dataset, test_dataset, user_groups_train, user_groups_test
 
 def get_combined_datasets(num_users, n_class, nsamples, rate_unbalance):
