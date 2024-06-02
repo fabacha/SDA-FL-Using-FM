@@ -186,6 +186,9 @@ def get_synthetic_dataset(num_users, n_class, nsamples, rate_unbalance):
     synthetic_transform = transforms.Compose(
         [transforms.Resize((32,32)), transforms.ToTensor(),
          transforms.Normalize((0.4914, 0.4822, 0.4465), (0.2023, 0.1994, 0.2010))])
+    apply_transform = transforms.Compose(
+        [transforms.ToTensor(),
+         transforms.Normalize((0.4914, 0.4822, 0.4465), (0.2023, 0.1994, 0.2010))])
     train_dataset = SyntheticImageDataset(data_dir,transform=synthetic_transform)
 
     test_dataset = datasets.CIFAR10(data_dir, train=False, download=True,
