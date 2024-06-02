@@ -114,6 +114,11 @@ def args_parser():
                         help='number of samples per class distributed to clients')
     parser.add_argument('--rate_unbalance_cifar', type=float, default=0.5,
                         help='Rate of unbalance for CIFAR dataset (default: 0.5)')
+
+    #Synthetic Data
+     parser.add_argument('--add_synthetic', type=int, default=0,
+                        help='add synthetic data?')
+    
     
     args = parser.parse_args()
     return args
