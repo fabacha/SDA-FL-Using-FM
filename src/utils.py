@@ -6,6 +6,8 @@ import copy
 import heapq
 import torch
 import numpy as np
+from torch.utils.data import Dataset, DataLoader
+from PIL import Image
 from torchvision import datasets, transforms
 from sampling import mnist_iid, mnist_noniid, mnist_noniid_unequal
 from sampling import cifar_iid, cifar_noniid, cifar_extr_noniid, miniimagenet_extr_noniid, mnist_extr_noniid
