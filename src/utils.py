@@ -14,8 +14,9 @@ from sampling import cifar_iid, cifar_noniid, cifar_extr_noniid, miniimagenet_ex
 
 
 class SyntheticImageDataset(Dataset):
-    def __init__(self, root_dir, transform=None):
+    def __init__(self, root_dir, labels, transform=None):
         self.root_dir = root_dir
+        self.labels = labels
         self.transform = transform
         self.image_files = sorted(os.listdir(root_dir))
         
@@ -29,7 +30,9 @@ class SyntheticImageDataset(Dataset):
         if self.transform:
             image = self.transform(image)
             
-        return image
+        label = self.labels[idx]
+        
+        return image, label
 
 # Function to combine CIFAR-10 dataset with synthetic image data for each client
 
