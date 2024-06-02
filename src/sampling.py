@@ -213,7 +213,7 @@ def get_synthetic_dataset(num_users, n_class, nsamples, rate_unbalance):
          transforms.Normalize((0.4914, 0.4822, 0.4465), (0.2023, 0.1994, 0.2010))])
 
 # Define labels for synthetic dataset (should be provided or generated separately)
-    synthetic_labels = [9] * len(os.listdir('./synthetic_data'))  # Assuming class 9 for synthetic data
+    synthetic_labels = [9] * 5000 #len(os.listdir('../data/synthetic_data'))  # Assuming class 9 for synthetic data
 
     synthetic_train_dataset = SyntheticImageDataset(data_dir, labels=synthetic_labels, transform=synthetic_transform)
     
