@@ -30,25 +30,25 @@ import os
 #         return image
 
 class SyntheticImageDataset(Dataset):
-    def __init__(self, root_dir, labels, transform=None):
+    def __init__(self, root_dir, transform=None):
         self.root_dir = root_dir
-        self.labels = labels
         self.transform = transform
         self.image_files = sorted(os.listdir(root_dir))
-        
+        self.targets = [9] * len(self.image_files)  # Assuming 'truck' class for all images
+
     def __len__(self):
         return len(self.image_files)
-    
+
     def __getitem__(self, idx):
         img_name = os.path.join(self.root_dir, self.image_files[idx])
         image = Image.open(img_name).convert('RGB')
-        
+
         if self.transform:
             image = self.transform(image)
-            
-        label = self.labels[idx]
-        
+
+        label = self.targets[idx]
         return image, label
+
         
 
 
@@ -213,9 +213,11 @@ def get_synthetic_dataset(num_users, n_class, nsamples, rate_unbalance):
          transforms.Normalize((0.4914, 0.4822, 0.4465), (0.2023, 0.1994, 0.2010))])
 
 # Define labels for synthetic dataset (should be provided or generated separately)
-    synthetic_labels = [9] * 5000 #len(os.listdir('../data/synthetic_data'))  # Assuming class 9 for synthetic data
+    #synthetic_labels = [9] * 5000 #len(os.listdir('../data/synthetic_data'))  # Assuming class 9 for synthetic data
 
-    synthetic_train_dataset = SyntheticImageDataset(data_dir, labels=synthetic_labels, transform=synthetic_transform)
+    synthetic_train_dataset = SyntheticImageDataset(data_dir, transform=synthetic_transform)
+        
+    #synthetic_train_dataset = SyntheticImageDataset(data_dir, labels=synthetic_labels, transform=synthetic_transform)
     
     test_dataset = datasets.CIFAR10(data_dir, train=False, download=True,
                                       transform=apply_transform)
