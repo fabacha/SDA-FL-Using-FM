@@ -188,12 +188,29 @@ def get_synthetic_dataset(num_users, n_class, nsamples, rate_unbalance):
     train_dataset = SyntheticImageDataset(data_dir, train=True, download=True,
                                    transform=synthetic_transform)
 
-    # test_dataset = datasets.CIFAR10(data_dir, train=False, download=True,
-    #                                   transform=apply_transform)
+    test_dataset = datasets.CIFAR10(data_dir, train=False, download=True,
+                                      transform=apply_transform)
 
     # Chose euqal splits for every user
     user_groups_train, user_groups_test = cifar_extr_noniid(train_dataset, test_dataset, num_users, n_class, nsamples, rate_unbalance)
     return train_dataset, test_dataset, user_groups_train, user_groups_test
+
+def get_combined_datasets(num_users, n_class, nsamples, rate_unbalance):
+    # data_dir = '../data/cifar/'
+    # apply_transform = transforms.Compose(
+    #     [transforms.ToTensor(),
+    #      transforms.Normalize((0.4914, 0.4822, 0.4465), (0.2023, 0.1994, 0.2010))])
+    # train_dataset = datasets.CIFAR10(data_dir, train=True, download=True,
+    #                                transform=apply_transform)
+    combined_datasets = combine_datasets(train_dataset, synthetic_train_dataset)
+    test_dataset = datasets.CIFAR10(data_dir, train=False, download=True,
+                                      transform=apply_transform)
+
+    # Chose equal splits for every user
+    user_groups_train, user_groups_test = cifar_extr_noniid(combined_datasets, test_dataset, num_users, n_class, nsamples, rate_unbalance)
+    return train_dataset, test_dataset, user_groups_train, user_groups_test
+
+
 
 
 
