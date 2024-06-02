@@ -211,13 +211,17 @@ def get_synthetic_dataset(num_users, n_class, nsamples, rate_unbalance):
     apply_transform = transforms.Compose(
         [transforms.ToTensor(),
          transforms.Normalize((0.4914, 0.4822, 0.4465), (0.2023, 0.1994, 0.2010))])
-    train_dataset = SyntheticImageDataset(data_dir,transform=synthetic_transform)
 
+# Define labels for synthetic dataset (should be provided or generated separately)
+    synthetic_labels = [9] * len(os.listdir('./synthetic_data'))  # Assuming class 9 for synthetic data
+
+    synthetic_train_dataset = SyntheticImageDataset(data_dir, labels=synthetic_labels, transform=synthetic_transform)
+    
     test_dataset = datasets.CIFAR10(data_dir, train=False, download=True,
                                       transform=apply_transform)
 
     # Chose euqal splits for every user
-    user_groups_train, user_groups_test = cifar_extr_noniid(train_dataset, test_dataset, num_users, n_class, nsamples, rate_unbalance)
+    user_groups_train, user_groups_test = cifar_extr_noniid(synthetic_train_dataset, test_dataset, num_users, n_class, nsamples, rate_unbalance)
     return train_dataset, test_dataset, user_groups_train, user_groups_test
 
 def get_combined_datasets(num_users, n_class, nsamples, rate_unbalance):
