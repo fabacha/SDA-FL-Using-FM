@@ -79,6 +79,8 @@ if __name__ == '__main__':
         train_dataset, test_dataset, user_groups_train, user_groups_test = get_dataset_cifar10_extr_noniid(num_users_cifar, nclass_cifar, nsamples_cifar, rate_unbalance_cifar)
         synthetic_dataset = SyntheticImageDataset(root_dir='./synthetic_data', transform=synthetic_transform)
         combined_datasets = combine_datasets(train_dataset, synthetic_dataset)
+        train_dataset, test_dataset, user_groups_train, user_groups_test = get_synthetic_dataset(num_users_cifar, nclass_cifar, nsamples_cifar, rate_unbalance_cifar)
+        
 
         class_distribution = {
         0: [0, 1],  # Client 0 gets samples from 'airplane' and 'automobile'
