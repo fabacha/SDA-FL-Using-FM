@@ -14,6 +14,7 @@ from models import MLP, LeNet, CNNMnist, CNNFashion_Mnist, CNNCifar, CNNFeMnist,
 from utils import get_dataset, exp_details, average_weights
 from sampling import get_dataset_cifar10_extr_noniid
 from plot import plot_client_data_distribution, plot_client_data_distribution_iid
+from sampling import SyntheticImageDataset
 #plot_class_distribution
 
 if __name__ == '__main__':
