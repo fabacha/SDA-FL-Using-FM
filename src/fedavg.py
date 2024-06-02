@@ -78,8 +78,8 @@ if __name__ == '__main__':
         rate_unbalance_cifar = args.rate_unbalance_cifar
         train_dataset, test_dataset, user_groups_train, user_groups_test = get_dataset_cifar10_extr_noniid(num_users_cifar, nclass_cifar, nsamples_cifar, rate_unbalance_cifar)
         synthetic_dataset = SyntheticImageDataset(root_dir='./synthetic_data', transform=synthetic_transform)
-        combined_datasets = combine_datasets(train_dataset, synthetic_dataset)
-        train_dataset, test_dataset, user_groups_train, user_groups_test = get_synthetic_dataset(num_users_cifar, nclass_cifar, nsamples_cifar, rate_unbalance_cifar)
+        synthetic_train_dataset, test_dataset, user_groups_train, user_groups_test = get_synthetic_dataset(num_users_cifar, nclass_cifar, nsamples_cifar, rate_unbalance_cifar)
+        combined_datasets = combine_datasets(train_dataset, synthetic_train_dataset)
         
 
         class_distribution = {
