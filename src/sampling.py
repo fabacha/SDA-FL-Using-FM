@@ -167,14 +167,14 @@ def mnist_noniid_unequal(dataset, num_users):
 
 def get_dataset_cifar10_extr_noniid(num_users, n_class, nsamples, rate_unbalance):
     data_dir = '../data/cifar/'
-    synthetic_transform = transforms.Compose(
+    apply_transform = transforms.Compose(
         [transforms.ToTensor(),
          transforms.Normalize((0.4914, 0.4822, 0.4465), (0.2023, 0.1994, 0.2010))])
     train_dataset = datasets.CIFAR10(data_dir, train=True, download=True,
-                                   transform=synthetic_transform)
+                                   transform=apply_transform)
 
-    # test_dataset = datasets.CIFAR10(data_dir, train=False, download=True,
-    #                                   transform=apply_transform)
+    test_dataset = datasets.CIFAR10(data_dir, train=False, download=True,
+                                      transform=apply_transform)
 
     # Chose equal splits for every user
     user_groups_train, user_groups_test = cifar_extr_noniid(train_dataset, test_dataset, num_users, n_class, nsamples, rate_unbalance)
@@ -182,14 +182,14 @@ def get_dataset_cifar10_extr_noniid(num_users, n_class, nsamples, rate_unbalance
 
 def get_synthetic_dataset(num_users, n_class, nsamples, rate_unbalance):
     data_dir = '../data/synthetic_data/500Trucks.zip'
-    apply_transform = transforms.Compose(
+    synthetic_transform = transforms.Compose(
         [transforms.Resize((32,32)), transforms.ToTensor(),
          transforms.Normalize((0.4914, 0.4822, 0.4465), (0.2023, 0.1994, 0.2010))])
     train_dataset = SyntheticImageDataset(data_dir, train=True, download=True,
-                                   transform=apply_transform)
+                                   transform=synthetic_transform)
 
-    test_dataset = datasets.CIFAR10(data_dir, train=False, download=True,
-                                      transform=apply_transform)
+    # test_dataset = datasets.CIFAR10(data_dir, train=False, download=True,
+    #                                   transform=apply_transform)
 
     # Chose euqal splits for every user
     user_groups_train, user_groups_test = cifar_extr_noniid(train_dataset, test_dataset, num_users, n_class, nsamples, rate_unbalance)
