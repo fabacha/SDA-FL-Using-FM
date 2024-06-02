@@ -182,7 +182,7 @@ def get_dataset_cifar10_extr_noniid(num_users, n_class, nsamples, rate_unbalance
     return train_dataset, test_dataset, user_groups_train, user_groups_test
 
 def get_synthetic_dataset(num_users, n_class, nsamples, rate_unbalance):
-    data_dir = '../data/synthetic_data/500Trucks.zip'
+    data_dir = '../data/synthetic_data'
     synthetic_transform = transforms.Compose(
         [transforms.Resize((32,32)), transforms.ToTensor(),
          transforms.Normalize((0.4914, 0.4822, 0.4465), (0.2023, 0.1994, 0.2010))])
