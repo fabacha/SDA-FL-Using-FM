@@ -7,6 +7,7 @@ import numpy as np
 from torchvision import datasets, transforms
 from torch.utils.data import Dataset, DataLoader
 from PIL import Image
+import os
 
 
 # Custom PyTorch Dataset for synthetic image data
