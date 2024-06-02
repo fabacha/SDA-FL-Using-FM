@@ -11,9 +11,28 @@ import os
 
 
 # Custom PyTorch Dataset for synthetic image data
+# class SyntheticImageDataset(Dataset):
+#     def __init__(self, root_dir, transform=None):
+#         self.root_dir = root_dir
+#         self.transform = transform
+#         self.image_files = sorted(os.listdir(root_dir))
+        
+#     def __len__(self):
+#         return len(self.image_files)
+    
+#     def __getitem__(self, idx):
+#         img_name = os.path.join(self.root_dir, self.image_files[idx])
+#         image = Image.open(img_name).convert('RGB')
+        
+#         if self.transform:
+#             image = self.transform(image)
+            
+#         return image
+
 class SyntheticImageDataset(Dataset):
-    def __init__(self, root_dir, transform=None):
+    def __init__(self, root_dir, labels, transform=None):
         self.root_dir = root_dir
+        self.labels = labels
         self.transform = transform
         self.image_files = sorted(os.listdir(root_dir))
         
@@ -27,7 +46,10 @@ class SyntheticImageDataset(Dataset):
         if self.transform:
             image = self.transform(image)
             
-        return image
+        label = self.labels[idx]
+        
+        return image, label
+        
 
 
 def mnist_iid(dataset, num_users):
