@@ -2,7 +2,7 @@
 ## Setup
 ```
 pytorch=1.2.0
-torchvision=0.4.0
+torchvision=0.12.0
 ```
 
 ## Quick start
