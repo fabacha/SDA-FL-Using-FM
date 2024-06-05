@@ -111,7 +111,7 @@ class LocalUpdate(object):
                 log_probs = model(images)
                 loss = self.criterion(log_probs, labels)
                 if self.args.fedprox:
-                    local_net = copy.deepcopy(model).to(args.device)
+                    local_net = copy.deepcopy(model).to(self.device)
                     if iter > 0: 
                         for w, w_t in zip(local_net.parameters(), model.parameters()):
                             loss += self.args.mu / 2. * torch.pow(torch.norm(w.data - w_t.data), 2)
