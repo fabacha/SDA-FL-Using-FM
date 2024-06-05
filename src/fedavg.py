@@ -132,7 +132,7 @@ if __name__ == '__main__':
             print('user {}, loss {}, acc {}'.format(idx, loss, acc))
             local_weights.append(copy.deepcopy(w))
             local_losses.append(copy.deepcopy(loss))
-            local_ns.append(1)
+            
            
        
 
