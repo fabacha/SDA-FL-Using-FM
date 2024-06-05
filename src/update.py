@@ -97,6 +97,9 @@ class LocalUpdate(object):
             #psu_optimizer = torch.optim.Adam(psu_model.parameters(), lr=self.args.lr,
             #                             weight_decay=1e-4)
         
+        #My edit for local net
+
+       
         
         for iter in range(self.args.local_ep):
             batch_loss = []
@@ -107,22 +110,14 @@ class LocalUpdate(object):
                 model.zero_grad()
                 log_probs = model(images)
                 loss = self.criterion(log_probs, labels)
+                if self.args.fedprox:
+                    local_net = copy.deepcopy(model).to(args.device)
+                    if iter > 0: 
+                        for w, w_t in zip(local_net.parameters(), model.parameters()):
+                            loss += self.args.mu / 2. * torch.pow(torch.norm(w.data - w_t.data), 2)
                 loss.backward()
                 
                 optimizer.step()
-
-                if self.args.defense == "WBC":
-                    if batch_idx != 0:
-                        for name, p in model.named_parameters():
-                            if 'weight' in name:
-                                grad_tensor = p.grad.data.cpu().numpy()
-                                grad_diff = grad_tensor - old_gradient[name]
-                                pertubation = np.random.laplace(0, self.args.pert_strength, size=grad_tensor.shape).astype(np.float32)
-                                pertubation = np.where(abs(grad_diff) > abs(pertubation), 0, pertubation)
-                                p.data = torch.from_numpy(p.data.cpu().numpy()+pertubation*self.args.lr).to(device)
-                    for name, p in model.named_parameters():
-                        if 'weight' in name:
-                            old_gradient[name] = p.grad.data.cpu().numpy()
 
                 batch_loss.append(loss.item())
             epoch_loss.append(sum(batch_loss)/len(batch_loss))
