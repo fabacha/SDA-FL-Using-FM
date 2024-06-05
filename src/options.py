@@ -31,8 +31,9 @@ def args_parser():
                         help="number of images per class per client have")
     parser.add_argument('--rate_unbalance', type=float, default=1.0,
                         help="unbalance rate")
-     parser.add_argument('--fedprox', type=int, default=0, help="federated optimization algorithm"')
-     parser.add_argument('--mu', type=float, default=1e-2, help='hyper parameter for fedprox')
+    parser.add_argument('--fedprox', type=int, default=0, help="federated optimization algorithm"')
+                        
+    parser.add_argument('--mu', type=float, default=1e-2, help='hyper parameter for fedprox')
 
 
     # model arguments
