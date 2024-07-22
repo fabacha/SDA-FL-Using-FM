@@ -27,7 +27,7 @@ def args_parser():
                         help='SGD momentum (default: 0.5)')
     parser.add_argument('--nclass', type=int, default=2,
                         help="number of image classes per client have")
-    parser.add_argument('--nsamples', type=int, default=20,
+    parser.add_argument('--numsamples', type=int, default=1000,
                         help="number of images per class per client have")
     parser.add_argument('--rate_unbalance', type=float, default=1.0,
                         help="unbalance rate")
