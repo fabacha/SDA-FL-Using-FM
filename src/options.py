@@ -69,6 +69,12 @@ def args_parser():
                         help='number of samples for each class')
 
     # malicious arguments
+
+     parser.add_argument('--mal', type=bool, default=False,
+                        help='Is a client malicious?')
+
+    parser.add_argument('--mal_clients', type=int, default=0,
+                        help='number of malicious clients')
     parser.add_argument('--num_mal_samples', type=int, default=1,
                         help='number of malicious samples')
     parser.add_argument('--mal_boost', type=int, default=1,
@@ -80,7 +86,7 @@ def args_parser():
     parser.add_argument('--l1_reg', type=float, default=0.01,
                         help='L1 regularization')
 
-    # defence arguments
+    # defense arguments
     parser.add_argument('--defense', type=str, default='None', help="type \
                         of defense")
     parser.add_argument('--pert_strength', type=float, default=1e-4,
