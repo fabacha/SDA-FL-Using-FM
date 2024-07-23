@@ -70,7 +70,7 @@ def args_parser():
 
     # malicious arguments
 
-     parser.add_argument('--mal', type=bool, default=False,
+    parser.add_argument('--mal', type=bool, default=False,
                         help='Is a client malicious?')
 
     parser.add_argument('--mal_clients', type=int, default=0,
