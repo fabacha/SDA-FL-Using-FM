@@ -73,7 +73,7 @@ def args_parser():
     parser.add_argument('--mal', type=bool, default=False,
                         help='Is a client malicious?')
 
-    parser.add_argument('--mal_clients', type=int, default=0,
+    parser.add_argument('--num_malicious', type=int, default=0,
                         help='number of malicious clients')
     parser.add_argument('--num_mal_samples', type=int, default=1,
                         help='number of malicious samples')
