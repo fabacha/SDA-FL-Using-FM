@@ -262,47 +262,23 @@ def get_combined_datasets(num_users, n_class, nsamples, rate_unbalance):
 
 #bot version
 
-# def cifar_iid(dataset, num_users):
-#     """
-#     Sample I.I.D. client data from CIFAR10 dataset
-#     :param dataset: CIFAR10 dataset
-#     :param num_users: Number of users
-#     :return: dict of image indices for each user
-#     """
-#     num_items = int(len(dataset) / num_users)
-#     dict_users, all_idxs = {}, np.array([i for i in range(len(dataset))])
-#     for i in range(num_users):
-#         dict_users[i] = np.random.choice(all_idxs, num_items, replace=False)
-#         all_idxs = np.setdiff1d(all_idxs, dict_users[i])
-#     return dict_users
-
-#bot verion with num_mal
-
-def cifar_iid(dataset, num_users, num_malicious):
+def cifar_iid(dataset, num_users):
     """
-    Sample I.I.D. client data from CIFAR10 dataset and make some clients malicious
+    Sample I.I.D. client data from CIFAR10 dataset
     :param dataset: CIFAR10 dataset
     :param num_users: Number of users
-    :param num_malicious: Number of malicious users
-    :return: dict of image indices for each user, dict of malicious labels for each malicious user
+    :return: dict of image indices for each user
     """
     num_items = int(len(dataset) / num_users)
     dict_users, all_idxs = {}, np.array([i for i in range(len(dataset))])
-    
-    # Randomly select malicious clients
-    mal_clients = random.sample(range(num_users), num_malicious)
-    dict_malicious = {}
-    
     for i in range(num_users):
         dict_users[i] = np.random.choice(all_idxs, num_items, replace=False)
         all_idxs = np.setdiff1d(all_idxs, dict_users[i])
-        
-        if i in mal_clients:
-            # Example of making a client malicious: flip the labels
-            dict_malicious[i] = [dataset[idx][1] for idx in dict_users[i]]  # Original labels
-            dict_malicious[i] = [(label + 1) % 10 for label in dict_malicious[i]]  # Flipped labels (assuming 10 classes)
-    
-    return dict_users, dict_malicious
+    return dict_users
+
+
+
+
 
 def cifar_noniid(dataset, num_users):
     """
