@@ -14,7 +14,7 @@ class DatasetSplit(Dataset):
     """An abstract Dataset class wrapped around Pytorch Dataset class.
     """
 
-    def __init__(self, dataset, idxs):
+    def __init__(self, dataset, idxs, Y = None):
         self.dataset = dataset
         self.idxs = [int(i) for i in idxs]
         
@@ -24,12 +24,14 @@ class DatasetSplit(Dataset):
 
     def __getitem__(self, item):
         image, label = self.dataset[self.idxs[item]]
-        
+        if self.mal==True:
+            label_mal = self.mal_Y[item]
+            return torch.tensor(image), torch.tensor(label_mal), torch.tensor(label)        
         return torch.tensor(image), torch.tensor(label)
 
 
 class LocalUpdate(object):
-    def __init__(self, args, dataset, idxs, logger, dataset_test, idxs_test=None):
+    def __init__(self, args, dataset, idxs, logger, mal, mal_X, mal_Y, dataset_test, idxs_test=None):
         self.args = args
         self.logger = logger
         
@@ -39,7 +41,8 @@ class LocalUpdate(object):
             self.trainloader, self.validloader, self.testloader = self.train_val_test_femnist(dataset, list(idxs), dataset_test, list(idxs_test))
         else:
             self.trainloader, self.validloader, self.testloader = self.train_val_test(dataset, list(idxs))
-        
+        if mal is True:
+            self.malloader = self.mal_loader(dataset_test, mal_X, mal_Y)        
         self.device = 'cuda' if args.gpu else 'cpu'
         # Default criterion set to NLL loss function
         self.criterion = nn.NLLLoss().to(self.device)
@@ -78,7 +81,10 @@ class LocalUpdate(object):
                                 batch_size=self.args.local_bs, shuffle=False)
         return trainloader, validloader, testloader
 
-   
+   def mal_loader(self, dataset, idxs, Y):
+        malloader = DataLoader(DatasetSplit(dataset, idxs, Y),
+                               batch_size=self.args.local_bs, shuffle=True)
+        return malloader
 
     def update_weights(self, model, global_round, device):
         EPS = 1e-6
@@ -99,31 +105,61 @@ class LocalUpdate(object):
         
         #My edit for local net
 
-       
+        if self.mal is True:
+            for iter in range(self.args.local_mal_ep):
+                '''
+                # benign train, you can uncomment this to optimize the benign task on malicious devices
+                for batch_idx, (images, labels) in enumerate(self.trainloader):
+                    images, labels = images.to(self.device), labels.to(self.device)
+ 
+                    model.zero_grad()
+                    log_probs = model(images)
+                    loss = self.criterion(log_probs, labels)
+                    loss.backward()
+                    
+                    optimizer.step()
+                '''
+                batch_loss = []
+                for batch_idx, (images, labels, _) in enumerate(self.malloader):
+                    images, labels = images.to(self.device), labels.to(self.device)
+ 
+                    model.zero_grad()
+                    log_probs = model(images)
+                    loss = self.criterion(log_probs, labels)
+
+                    loss.backward()
+
+                    optimizer.step()
+                    
+                    
+                    
+                    batch_loss.append(loss.item())
+                epoch_loss.append(sum(batch_loss)/len(batch_loss))
+
+        else:
         
-        for iter in range(self.args.local_ep):
-            batch_loss = []
-            old_gradient = {}
-            for batch_idx, (images, labels) in enumerate(self.trainloader):
-                images, labels = images.to(self.device), labels.to(self.device)
-
-                model.zero_grad()
-                log_probs = model(images)
-                loss = self.criterion(log_probs, labels)
-                if self.args.fedprox:
-                    local_net = copy.deepcopy(model).to(self.device)
-                    if iter > 0: 
-                        for w, w_t in zip(local_net.parameters(), model.parameters()):
-                            loss += self.args.mu / 2. * torch.pow(torch.norm(w.data - w_t.data), 2)
-                loss.backward()
-                
-                optimizer.step()
-
-                batch_loss.append(loss.item())
-            epoch_loss.append(sum(batch_loss)/len(batch_loss))
+            for iter in range(self.args.local_ep):
+                batch_loss = []
+                old_gradient = {}
+                for batch_idx, (images, labels) in enumerate(self.trainloader):
+                    images, labels = images.to(self.device), labels.to(self.device)
+    
+                    model.zero_grad()
+                    log_probs = model(images)
+                    loss = self.criterion(log_probs, labels)
+                    if self.args.fedprox:
+                        local_net = copy.deepcopy(model).to(self.device)
+                        if iter > 0: 
+                            for w, w_t in zip(local_net.parameters(), model.parameters()):
+                                loss += self.args.mu / 2. * torch.pow(torch.norm(w.data - w_t.data), 2)
+                    loss.backward()
+                    
+                    optimizer.step()
+    
+                    batch_loss.append(loss.item())
+                epoch_loss.append(sum(batch_loss)/len(batch_loss))
 
         return model.state_dict(), sum(epoch_loss) / len(epoch_loss)
-
     
 
     
