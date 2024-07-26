@@ -11,13 +11,13 @@ def args_parser():
     # federated arguments (Notation for the arguments followed from paper)
     parser.add_argument('--epochs', type=int, default=10,
                         help="number of rounds of training")
-    parser.add_argument('--num_users', type=int, default=100,
+    parser.add_argument('--num_users', type=int, default=10,
                         help="number of users: K")
-    parser.add_argument('--frac', type=float, default=0.1,
+    parser.add_argument('--frac', type=float, default=1,
                         help='the fraction of clients: C')
-    parser.add_argument('--local_ep', type=int, default=10,
+    parser.add_argument('--local_ep', type=int, default=2,
                         help="the number of local epochs: E")
-    parser.add_argument('--local_mal_ep', type=int, default=10,
+    parser.add_argument('--local_mal_ep', type=int, default=2,
                         help="the number of local malicious epochs: E")
     parser.add_argument('--local_bs', type=int, default=10,
                         help="local batch size: B")
@@ -27,7 +27,7 @@ def args_parser():
                         help='SGD momentum (default: 0.5)')
     parser.add_argument('--nclass', type=int, default=2,
                         help="number of image classes per client have")
-    parser.add_argument('--nsamples', type=int, default=20,
+    parser.add_argument('--nsamples', type=int, default=1000,
                         help="number of images per class per client have")
     parser.add_argument('--rate_unbalance', type=float, default=1.0,
                         help="unbalance rate")
@@ -77,7 +77,7 @@ def args_parser():
     parser.add_argument('--l1_reg', type=float, default=0.01,
                         help='L1 regularization')
 
-    # defence arguments
+    # defense arguments
     parser.add_argument('--defense', type=str, default='None', help="type \
                         of defense")
     parser.add_argument('--pert_strength', type=float, default=1e-4,
